@@ -1,6 +1,7 @@
 require("dotenv").load();
 const express = require("express");
 const app = express();
+const queries = require("./queries");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const Twitter = require("twitter");
@@ -14,7 +15,7 @@ const twitter = new Twitter({
 app.use(cors());
 app.use(bodyParser.json());
 
-app.get("/", (request, response) => {
+app.get("/tweets", (request, response) => {
   var params = { screen_name: "nodejs" };
   twitter.get("statuses/user_timeline", params, function(
     error,
