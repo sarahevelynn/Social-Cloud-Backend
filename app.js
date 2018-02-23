@@ -28,5 +28,60 @@ app.get("/", (request, response) => {
   });
 });
 
+
+app.get("/", (request, response) => {
+  queries
+    .list("personalLocations")
+    .then(personalLocations => {
+      response.json({ personalLocations });
+    })
+    .catch(error => console.log(error));
+});
+
+app.get("/personalLocations", (request, response) => {
+  queries
+    .list("personalLocations")
+    .then(personalLocations => {
+      response.json({ personalLocations });
+    })
+    .catch(error => console.log(error));
+});
+
+app.get("/personalLocations/:id", (request, response) => {
+  queries
+    .read(request.params.id)
+    .then(personalLocations => {
+      personalLocations ? response.json({ personalLocations }) : response.sendStatus(404);
+    })
+    .catch(console.error);
+});
+
+app.post("/personalLocations", (request, response) => {
+  queries
+    .create(request.body)
+    .then(personalLocations => {
+      response.status(201).json({ personalLocations: personalLocations });
+    })
+    .catch(console.error);
+});
+
+app.delete("/personalLocations/:id", (request, response) => {
+  queries
+    .delete(request.params.id)
+    .then(() => {
+      response.sendStatus(204);
+    })
+    .catch(console.error);
+});
+
+app.put("/personalLocations/:id", (request, response) => {
+  queries
+    .update(request.params.id, request.body)
+    .then(personalLocations => {
+      response.json({ personalLocations: personalLocations[0] });
+    })
+    .catch(console.error);
+});
+
 module.exports = app;
 app.listen(process.env.PORT || 4000);

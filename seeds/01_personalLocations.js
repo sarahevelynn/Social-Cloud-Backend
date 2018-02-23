@@ -1,8 +1,8 @@
 exports.seed = function(knex, Promise) {
-  return knex("locations")
+  return knex("personalLocations")
     .del()
     .then(function() {
-      return knex("locations").insert([
+      return knex("personalLocations").insert([
         {
           WOE_ID: 12515224,
           ISO: "XS",
