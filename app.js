@@ -15,6 +15,16 @@ const twitter = new Twitter({
 app.use(cors());
 app.use(bodyParser.json());
 
+
+app.get("/", (request, response) => {
+  queries
+    .list("personalLocations")
+    .then(personalLocations => {
+      response.json({ personalLocations });
+    })
+    .catch(error => console.log(error));
+});
+
 app.get("/tweets", (request, response) => {
   var params = { screen_name: "nodejs" };
   twitter.get("statuses/user_timeline", params, function(
@@ -27,16 +37,6 @@ app.get("/tweets", (request, response) => {
       response.send({ tweets });
     }
   });
-});
-
-
-app.get("/", (request, response) => {
-  queries
-    .list("personalLocations")
-    .then(personalLocations => {
-      response.json({ personalLocations });
-    })
-    .catch(error => console.log(error));
 });
 
 app.get("/personalLocations", (request, response) => {
