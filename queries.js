@@ -9,9 +9,9 @@ module.exports = {
       .where("id", id)
       .first();
   },
-  createLocations(locations) {
+  createLocations(personalLocations) {
     return database("personalLocations")
-      .insert(locations)
+      .insert(personalLocations)
       .returning("*")
       .then(record => record[0]);
   },

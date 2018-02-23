@@ -5,7 +5,7 @@ const queries = require("./queries");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const Twitter = require("twitter");
-const twitter = new Twitter({
+const client = new Twitter({
   consumer_key: process.env.CONSUMER_KEY,
   consumer_secret: process.env.CONSUMER_SECRET,
   access_token_key: process.env.ACCESS_TOKEN,
@@ -19,15 +19,20 @@ app.use(bodyParser.json());
 app.get("/", (request, response) => {
   queries
     .list("personalLocations")
-    .then(personalLocations => {
-      response.json({ personalLocations });
-    })
+    .then(personalLocations =>
+      queries.list("woeid").then(woeid =>
+        response.json({
+          personalLocations: personalLocations,
+          woeid: woeid
+        })
+      )
+    )
     .catch(error => console.log(error));
 });
 
 app.get("/tweets", (request, response) => {
   var params = { screen_name: "nodejs" };
-  twitter.get("statuses/user_timeline", params, function(
+  client.get("statuses/user_timeline", params, function(
     error,
     tweets,
     twitterResponse
@@ -53,6 +58,24 @@ app.get("/personalLocations/:id", (request, response) => {
     .read(request.params.id)
     .then(personalLocations => {
       personalLocations ? response.json({ personalLocations }) : response.sendStatus(404);
+    })
+    .catch(console.error);
+});
+
+app.get("/woeid", (request, response) => {
+  queries
+    .list("woeid")
+    .then(woeid => {
+      response.json({ woeid });
+    })
+    .catch(error => console.log(error));
+});
+
+app.get("/woeid/:id", (request, response) => {
+  queries
+    .read(request.params.id)
+    .then(woeid => {
+      woeid ? response.json({ woeid }) : response.sendStatus(404);
     })
     .catch(console.error);
 });
