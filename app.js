@@ -85,4 +85,3 @@ app.put("/personalLocations/:id", (request, response) => {
 });
 
 module.exports = app;
-app.listen(process.env.PORT || 4000);
