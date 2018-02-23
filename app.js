@@ -31,8 +31,8 @@ app.get("/", (request, response) => {
 });
 
 app.get("/tweets", (request, response) => {
-  var params = { screen_name: "nodejs" };
-  client.get("statuses/user_timeline", params, function(
+  var params = { id: 2391279 };
+  client.get("trends/place", params, function(
     error,
     tweets,
     twitterResponse
